@@ -49,6 +49,9 @@ protected:
   GLfloat trfhead;
   GLfloat rothead;
   int nl;
+  GLint showAngle;
+  GLint showNLevel;
+  GLboolean bOnlySkull;
 
 };
 

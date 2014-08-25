@@ -29,8 +29,11 @@ Chead ch("headdata.den");
 NeHeWidget::NeHeWidget( QWidget* parent, const QGLWidget* name, bool fs )
     : QGLWidget( parent, name )
 {
-  rothead=90.0;
-  trfhead=-2.0;
+  showAngle=5;//3d
+  bOnlySkull=1;
+  showNLevel=0;
+  rothead=0.0;
+  trfhead=-2.3;
   nl=0;
   fullscreen = fs;
   setGeometry( 0, 0, 640, 480 );
@@ -39,7 +42,6 @@ NeHeWidget::NeHeWidget( QWidget* parent, const QGLWidget* name, bool fs )
   if ( fullscreen )
     showFullScreen();
   ch.readheads();
-//  ch.optdatas();
 }
 
 NeHeWidget::~NeHeWidget()
@@ -50,8 +52,30 @@ void NeHeWidget::paintGL()
 {
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
   glLoadIdentity();
-//  paintP();
-  ch.show3d(-0.5,  -0.4, trfhead, rothead, 1, 1, 1);
+  switch (showAngle) {
+  case 0:
+      ch.show3d(bOnlySkull,-0.5,  -0.5, trfhead, rothead, 1, 1, 1);
+      break;
+  case 1:
+      ch.show2dAhead(showNLevel,bOnlySkull, -1,  -0.5, -0.5);
+      break;
+  case 2:
+      ch.show2dBack(showNLevel,bOnlySkull, 1,  -0.5, -0.5);
+      break;
+  case 3:
+      ch.show2dLeft(showNLevel,bOnlySkull,-0.5, -1,  -0.5);
+      break;
+  case 4:
+      ch.show2dRight(showNLevel,bOnlySkull,-0.5, 1,  -0.5);
+      break;
+  case 5:
+      ch.show2dTop(showNLevel,bOnlySkull,-0.5,  -0.5, -1);
+      break;
+  case 6:
+      ch.show2dBelow(showNLevel,bOnlySkull,-0.5,  -0.5, -1);
+      break;
+  }
+
 }
 
 void NeHeWidget::initializeGL()
@@ -78,50 +102,6 @@ void NeHeWidget::resizeGL( int width, int height )
   glLoadIdentity();
 }
 
-
-void NeHeWidget::paintP()
-{
-//    glNewList(1,GL_COMPILE);
-    glTranslatef( -0.8,  -0.7, trfhead );
-    glRotatef( rothead,  1,  1,  1 );
-
-    glBegin(GL_QUADS);
-//    glBegin(GL_POINTS);
-        QVector<Hdata> vdata=ch.getdatas();
-        int ct=vdata.count(),v=nl;
-        for(v=0;v<ct-1;v++)
-
-//            if(v<ct)
-        {
-            int i,j;
-            GLfloat k=v/113.0;
-            for(i=0;i<127;i++)
-            {
-                for(j=0;j<127;j++)
-                {
-                    if(vdata[v].data[i][j]<140)continue;
-                    GLfloat rgb=vdata[v].data[i][j];    glColor3f(rgb/255.0,0,0);   glVertex3f(i/128.0,j/128.0,k);
-                    rgb=vdata[v].data[i+1][j];      glColor3f(rgb/255.0,0,0);   glVertex3f((i+1)/128.0,j/128.0,k);
-                    rgb=vdata[v].data[i+1][j+1];    glColor3f(rgb/255.0,0,0);   glVertex3f((i+1)/128.0,(j+1)/128.0,k);
-                    rgb=vdata[v].data[i][j+1];      glColor3f(rgb/255.0,0,0);   glVertex3f(i/128.0,(j+1)/128.0,k);
-
-//                    //2
-//                    rgb=vdata[v].data[i][j];    glColor3f(rgb/255.0,0,0);   glVertex3f(i/128.0,j/128.0,k);
-//                    rgb=vdata[v].data[i+1][j];      glColor3f(rgb/255.0,0,0);   glVertex3f((i+1)/128.0,j/128.0,k);
-//                    rgb=vdata[v].data[i+1][j+1];    glColor3f(rgb/255.0,0,0);   glVertex3f((i+1)/128.0,(j+1)/128.0,k);
-//                    rgb=vdata[v].data[i][j+1];      glColor3f(rgb/255.0,0,0);   glVertex3f(i/128.0,(j+1)/128.0,k);
-
-                }
-            }
-        }
-
-    glEnd();
-//glEndList();
-    nl+=1;
-    if(nl>=ct)nl=0;
-}
-
-
 void NeHeWidget::keyPressEvent( QKeyEvent *e )
 {
   switch ( e->key() )
@@ -143,21 +123,79 @@ void NeHeWidget::keyPressEvent( QKeyEvent *e )
       rothead-=13;
       update();
       break;
-  case Qt::Key_Down:   //press the key "R" to rotation the draw
-      rothead-=3;
-      trfhead-=1;
+  case Qt::Key_Down:
+      if(showAngle==0)
+      {
+        trfhead-=0.3;
+      }
+      else
+      {
+          showNLevel--;
+      }
       update();
       break;
   case Qt::Key_Up:   //press the key "R" to rotation the draw
-      rothead-=3;
-      trfhead+=1;
+      if(showAngle==0)
+      {
+          trfhead+=0.3;
+          if(trfhead>=0)trfhead=-2.3;
+      }
+      else
+      {
+          showNLevel++;
+      }
       update();
       break;
   case Qt::Key_Escape:
     close();break;
-  case Qt::Key_Space:
+  case Qt::Key_S:
+      bOnlySkull=!bOnlySkull;      
       update();
       break;
+  case Qt::Key_C:
+      trfhead=-2.3;
+      bOnlySkull=0;
+      showAngle=0;
+      showNLevel=0;
+      update();
+      break;
+
+      //showAngle-->show3d
+  case Qt::Key_0:
+      showAngle=0;
+      update();
+      break;
+      //showAngle-->show2dAhead
+  case Qt::Key_1:
+      showAngle=1;
+      update();
+      break;
+      //showAngle-->show2dBack
+  case Qt::Key_2:
+      showAngle=2;
+      update();
+      break;
+      //showAngle-->show2dLeft
+  case Qt::Key_3:
+      showAngle=3;
+      update();
+      break;
+      //showAngle-->show2dRight
+  case Qt::Key_4:
+      showAngle=4;
+      update();
+      break;
+      //showAngle-->show2dTop
+  case Qt::Key_5:
+      showAngle=5;
+      update();
+      break;
+      //showAngle-->show2dBelow
+  case Qt::Key_6:
+      showAngle=6;
+      update();
+      break;
+
   }
 }
 
