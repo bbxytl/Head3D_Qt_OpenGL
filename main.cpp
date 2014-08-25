@@ -43,12 +43,10 @@ int main( int argc, char **argv )
   }
 
 //  Widget wg;
-
   NeHeWidget w( 0, 0, fs );
 
-
 //  w.setParent(&wg);
-//  a.setMainWidget( &w );
+
   w.show();
 //  wg.show();
 
