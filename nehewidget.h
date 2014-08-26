@@ -23,6 +23,7 @@
 #include <QWidget>
 #include <qgl.h>
 #include <GL/glu.h>
+#include "widget.h"
 
 QT_BEGIN_NAMESPACE
 class QLabel;
@@ -43,8 +44,6 @@ protected:
   void paintGL();
   void resizeGL( int width, int height );
 
-  void paintP();
-
   void keyPressEvent( QKeyEvent *e );
 
 protected:
@@ -52,12 +51,12 @@ protected:
   bool fullscreen;
   GLfloat trfhead;
   GLfloat rothead;
-  int nl;
+
   GLint showAngle;
   GLint showNLevel;
   GLboolean bOnlySkull;
 
-  QLabel *label;
+  Widget *w;
 
 };
 

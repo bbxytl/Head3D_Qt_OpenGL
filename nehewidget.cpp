@@ -34,7 +34,9 @@ NeHeWidget::NeHeWidget( QWidget* parent, const QGLWidget* name, bool fs )
   showNLevel=0;
   rothead=0.0;
   trfhead=-2.3;
-  nl=0;
+
+  w=new Widget(0);
+
   fullscreen = fs;
   setGeometry( 0, 0, 640, 480 );
   setWindowTitle( "Head 2D/3D ---Press 'H' to help !" );
@@ -117,8 +119,9 @@ void NeHeWidget::keyPressEvent( QKeyEvent *e )
   {
   case Qt::Key_H:
       if(1){
-      Widget *wd=new Widget(0);
-      wd->show();
+//      Widget *w=new Widget(0);
+      w->show();
+      w->move((QApplication::desktop()->width()-w->width())/2,(QApplication::desktop()->height()-w->height())/2);
       }
       break;
   case Qt::Key_A:
@@ -135,6 +138,7 @@ void NeHeWidget::keyPressEvent( QKeyEvent *e )
     update();
     break;    
   case Qt::Key_Q:
+      delete w;
     close();break;
   case Qt::Key_S:
       bOnlySkull=!bOnlySkull;

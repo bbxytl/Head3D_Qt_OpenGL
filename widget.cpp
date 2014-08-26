@@ -6,7 +6,7 @@ Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget)
 {
-    setWindowTitle("Help! Press 'H'... ");
+    setFixedSize(639,637);
     ui->setupUi(this);    
 }
 
