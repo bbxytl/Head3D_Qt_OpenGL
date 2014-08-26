@@ -1,26 +1,44 @@
+#include <QKeyEvent>
 #include "widget.h"
 #include "ui_widget.h"
-
+#include "nehewidget.h"
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget)
 {
-    ui->setupUi(this);
-    bclose=false;
+    setWindowTitle("Help! Press 'H'... ");
+    ui->setupUi(this);    
 }
 
 Widget::~Widget()
 {
-    delete ui;
+    delete ui;    
 }
 
 void Widget::on_pushButton_clicked()
 {
-    bclose=true;
     this->close();
 }
 
-bool Widget::isClose()
+void Widget::keyPressEvent(QKeyEvent *e)
 {
-    return bclose;
+    if(e->key()==Qt::Key_W)
+    {
+        this->close();
+    }
 }
+
+//void Widget::closeEvent(QCloseEvent *e)
+//{
+//    if(bfirst)
+//    {
+//        NeHeWidget w( 0, 0, true );
+//        w.show();
+//        bfirst=!bfirst;
+//    }
+//}
+
+//void Widget::setFirst(bool bf)
+//{
+//    bfirst=bf;
+//}

@@ -15,14 +15,18 @@ public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
 
-    bool isClose();
+//    void closeEvent(QCloseEvent *e);
 
+//    void setFirst(bool bfirst);
+
+    void keyPressEvent(QKeyEvent *e);
 private slots:
     void on_pushButton_clicked();
 
 private:
     Ui::Widget *ui;
-    bool bclose;
+//    bool bfirst;
+
 };
 
 #endif // WIDGET_H

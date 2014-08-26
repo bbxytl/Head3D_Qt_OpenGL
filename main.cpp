@@ -19,7 +19,7 @@
 
 #include <qapplication.h>
 #include <qmessagebox.h>
-#include<widget.h>
+#include<QDesktopWidget>
 #include "nehewidget.h"
 
 int main( int argc, char **argv )
@@ -42,10 +42,9 @@ int main( int argc, char **argv )
 //    break;
 //  }
 
-  Widget wg;
-  wg.show();
-  while(wg.isClose()!=true) continue;
   NeHeWidget w( 0, 0, fs );
   w.show();
+  w.move((QApplication::desktop()->width()-w.width())/2,(QApplication::desktop()->height()-w.height())/2);
+
   return a.exec();
 }

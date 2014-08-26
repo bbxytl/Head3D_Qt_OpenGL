@@ -17,13 +17,14 @@
 
 */
 
+#include <qmessagebox.h>
 #include <QtWidgets>
 #include "nehewidget.h"
 #include<QKeyEvent>
 #include"widget.h"
 #include"chead.h"
 
-Chead ch("headdata.den");
+Chead ch("../head3D/headData/headdata.den");
 
 NeHeWidget::NeHeWidget( QWidget* parent, const QGLWidget* name, bool fs )
     : QGLWidget( parent, name )
@@ -36,10 +37,12 @@ NeHeWidget::NeHeWidget( QWidget* parent, const QGLWidget* name, bool fs )
   nl=0;
   fullscreen = fs;
   setGeometry( 0, 0, 640, 480 );
-  setWindowTitle( "NeHe's Solid Object Tutorial" );
-
-  label=new QLabel(this);
-  label->setText("Press 0:3D ; 1:Ahead ; 2:Back");
+  setWindowTitle( "Head 2D/3D ---Press 'H' to help !" );
+  QMessageBox::information( 0,
+        "Read Help",
+        "Press 'H' to read help !",
+        QMessageBox::Ok,
+        QMessageBox::Default );
 
   if ( fullscreen )
     showFullScreen();
@@ -49,6 +52,7 @@ NeHeWidget::NeHeWidget( QWidget* parent, const QGLWidget* name, bool fs )
 NeHeWidget::~NeHeWidget()
 {
 }
+
 
 void NeHeWidget::paintGL()
 {
@@ -65,10 +69,10 @@ void NeHeWidget::paintGL()
       ch.show2dBack(showNLevel,bOnlySkull, -trfhead,  -0.5, -0.5);
       break;
   case 3:
-      ch.show2dLeft(showNLevel,bOnlySkull,-0.5, trfhead,  -0.5);
+      ch.show2dLeft(showNLevel,bOnlySkull,-0.5, -trfhead,  -0.5);
       break;
   case 4:
-      ch.show2dRight(showNLevel,bOnlySkull,-0.5, -trfhead,  -0.5);
+      ch.show2dRight(showNLevel,bOnlySkull,-0.5, trfhead,  -0.5);
       break;
   case 5:
       ch.show2dTop(showNLevel,bOnlySkull,-0.5,  -0.5, trfhead);
@@ -80,6 +84,7 @@ void NeHeWidget::paintGL()
 
 }
 
+
 void NeHeWidget::initializeGL()
 {
   glShadeModel( GL_SMOOTH );
@@ -89,6 +94,7 @@ void NeHeWidget::initializeGL()
   glDepthFunc( GL_LEQUAL );
   glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
 }
+
 
 void NeHeWidget::resizeGL( int width, int height )
 {
@@ -103,6 +109,7 @@ void NeHeWidget::resizeGL( int width, int height )
   glMatrixMode( GL_MODELVIEW );
   glLoadIdentity();
 }
+
 
 void NeHeWidget::keyPressEvent( QKeyEvent *e )
 {
