@@ -20,9 +20,13 @@
 #ifndef NEHEWIDGET_H
 #define NEHEWIDGET_H
 
+#include <QWidget>
 #include <qgl.h>
-
 #include <GL/glu.h>
+
+QT_BEGIN_NAMESPACE
+class QLabel;
+QT_END_NAMESPACE
 
 class NeHeWidget : public QGLWidget
 {
@@ -52,6 +56,8 @@ protected:
   GLint showAngle;
   GLint showNLevel;
   GLboolean bOnlySkull;
+
+  QLabel *label;
 
 };
 

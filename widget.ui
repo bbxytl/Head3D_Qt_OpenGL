@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>688</width>
-    <height>504</height>
+    <width>639</width>
+    <height>637</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,31 +16,88 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>10</x>
      <y>10</y>
-     <width>651</width>
-     <height>481</height>
+     <width>361</width>
+     <height>611</height>
     </rect>
    </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
    </property>
    <property name="title">
-    <string>Pic2D-3D</string>
+    <string>使用说明</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
-   <widget class="QWidget" name="widget_nehe" native="true">
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>351</width>
+      <height>581</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;使用的按键以及功能：&lt;/p&gt;&lt;p&gt;H ：打开此帮助界面 &lt;/p&gt;&lt;p&gt;0 ：切换到3D模式 &lt;/p&gt;&lt;p&gt;1 ：切换到2D(前视图）模式 &lt;/p&gt;&lt;p&gt;2 ：切换到2D(后视图）模式 &lt;/p&gt;&lt;p&gt;3 ：切换到2D(左视图）模式 &lt;/p&gt;&lt;p&gt;4 ：切换到2D(右视图）模式 &lt;/p&gt;&lt;p&gt;5 ：切换到2D(上视图）模式 &lt;/p&gt;&lt;p&gt;6 ：切换到2D(下视图）模式&lt;/p&gt;&lt;p&gt;S ：切换头骨/全头像模式&lt;/p&gt;&lt;p&gt;R ：旋转头像（仅3D模式下有用）&lt;/p&gt;&lt;p&gt;C ：切换到当前模式的默认情况（仅2D模式下有效）&lt;/p&gt;&lt;p&gt;Up ：拉近视图-放大&lt;/p&gt;&lt;p&gt;Down：拉远视图-缩小&lt;/p&gt;&lt;p&gt;Left：2D(增加切片编号)&lt;/p&gt;&lt;p&gt;Right：2D(减小切片编号)&lt;/p&gt;&lt;p&gt;A ：切换全屏/非全屏模式&lt;/p&gt;&lt;p&gt;Q ：退出&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>10</y>
+     <width>231</width>
+     <height>571</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="title">
+    <string>声明</string>
+   </property>
+   <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>30</y>
-      <width>471</width>
-      <height>411</height>
+      <width>221</width>
+      <height>531</height>
      </rect>
     </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;可视计算（吴伟民教授）&lt;/p&gt;&lt;p&gt;课后作业！&lt;/p&gt;&lt;p&gt;环境：OpenGL+QT+Ubuntu&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/bbxytl/Head3D_Qt_OpenGL&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;GitHub源码&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
    </widget>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>520</x>
+     <y>590</y>
+     <width>99</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Close</string>
+   </property>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

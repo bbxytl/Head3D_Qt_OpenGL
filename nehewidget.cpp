@@ -17,20 +17,19 @@
 
 */
 
-
-#include"chead.h"
+#include <QtWidgets>
 #include "nehewidget.h"
 #include<QKeyEvent>
-#include<iostream>
-using namespace std;
+#include"widget.h"
+#include"chead.h"
 
 Chead ch("headdata.den");
 
 NeHeWidget::NeHeWidget( QWidget* parent, const QGLWidget* name, bool fs )
     : QGLWidget( parent, name )
 {
-  showAngle=5;//3d
-  bOnlySkull=1;
+  showAngle=0;//3d
+  bOnlySkull=0;
   showNLevel=0;
   rothead=0.0;
   trfhead=-2.3;
@@ -38,6 +37,9 @@ NeHeWidget::NeHeWidget( QWidget* parent, const QGLWidget* name, bool fs )
   fullscreen = fs;
   setGeometry( 0, 0, 640, 480 );
   setWindowTitle( "NeHe's Solid Object Tutorial" );
+
+  label=new QLabel(this);
+  label->setText("Press 0:3D ; 1:Ahead ; 2:Back");
 
   if ( fullscreen )
     showFullScreen();
@@ -57,22 +59,22 @@ void NeHeWidget::paintGL()
       ch.show3d(bOnlySkull,-0.5,  -0.5, trfhead, rothead, 1, 1, 1);
       break;
   case 1:
-      ch.show2dAhead(showNLevel,bOnlySkull, -1,  -0.5, -0.5);
+      ch.show2dAhead(showNLevel,bOnlySkull, trfhead,  -0.5, -0.5);
       break;
   case 2:
-      ch.show2dBack(showNLevel,bOnlySkull, 1,  -0.5, -0.5);
+      ch.show2dBack(showNLevel,bOnlySkull, -trfhead,  -0.5, -0.5);
       break;
   case 3:
-      ch.show2dLeft(showNLevel,bOnlySkull,-0.5, -1,  -0.5);
+      ch.show2dLeft(showNLevel,bOnlySkull,-0.5, trfhead,  -0.5);
       break;
   case 4:
-      ch.show2dRight(showNLevel,bOnlySkull,-0.5, 1,  -0.5);
+      ch.show2dRight(showNLevel,bOnlySkull,-0.5, -trfhead,  -0.5);
       break;
   case 5:
-      ch.show2dTop(showNLevel,bOnlySkull,-0.5,  -0.5, -1);
+      ch.show2dTop(showNLevel,bOnlySkull,-0.5,  -0.5, trfhead);
       break;
   case 6:
-      ch.show2dBelow(showNLevel,bOnlySkull,-0.5,  -0.5, -1);
+      ch.show2dBelow(showNLevel,bOnlySkull,-0.5,  -0.5, trfhead);
       break;
   }
 
@@ -106,7 +108,13 @@ void NeHeWidget::keyPressEvent( QKeyEvent *e )
 {
   switch ( e->key() )
   {
-  case Qt::Key_F2:
+  case Qt::Key_H:
+      if(1){
+      Widget *wd=new Widget(0);
+      wd->show();
+      }
+      break;
+  case Qt::Key_A:
     fullscreen = !fullscreen;
     if ( fullscreen )
     {
@@ -118,38 +126,11 @@ void NeHeWidget::keyPressEvent( QKeyEvent *e )
       setGeometry( 0, 0, 640, 480 );
     }
     update();
-    break;
-  case Qt::Key_R:   //press the key "R" to rotation the draw
-      rothead-=13;
-      update();
-      break;
-  case Qt::Key_Down:
-      if(showAngle==0)
-      {
-        trfhead-=0.3;
-      }
-      else
-      {
-          showNLevel--;
-      }
-      update();
-      break;
-  case Qt::Key_Up:   //press the key "R" to rotation the draw
-      if(showAngle==0)
-      {
-          trfhead+=0.3;
-          if(trfhead>=0)trfhead=-2.3;
-      }
-      else
-      {
-          showNLevel++;
-      }
-      update();
-      break;
-  case Qt::Key_Escape:
+    break;    
+  case Qt::Key_Q:
     close();break;
   case Qt::Key_S:
-      bOnlySkull=!bOnlySkull;      
+      bOnlySkull=!bOnlySkull;
       update();
       break;
   case Qt::Key_C:
@@ -159,40 +140,78 @@ void NeHeWidget::keyPressEvent( QKeyEvent *e )
       showNLevel=0;
       update();
       break;
-
+  case Qt::Key_R:   //press the key "R" to rotation the draw
+      rothead-=13;
+      update();
+      break;
+  case Qt::Key_Down:
+      trfhead-=0.2;
+      update();
+      break;
+  case Qt::Key_Up:
+      trfhead+=0.2;
+      if(trfhead>=0)
+      {
+          if(showAngle==0)trfhead=-2.3;
+          else trfhead=-1;
+      }
+      update();
+      break;
+  case Qt::Key_Left:
+      showNLevel--;
+      update();
+      break;
+  case Qt::Key_Right:
+      showNLevel++;
+      update();
+      break;
       //showAngle-->show3d
   case Qt::Key_0:
       showAngle=0;
+      bOnlySkull=0;
+      trfhead=-2.3;
       update();
       break;
       //showAngle-->show2dAhead
   case Qt::Key_1:
-      showAngle=1;
+      showAngle=1;      
+      bOnlySkull=1;
+      trfhead=-1;
       update();
       break;
       //showAngle-->show2dBack
   case Qt::Key_2:
       showAngle=2;
+      bOnlySkull=1;
+      trfhead=-1;
       update();
       break;
       //showAngle-->show2dLeft
   case Qt::Key_3:
       showAngle=3;
+      bOnlySkull=1;
+      trfhead=-1;
       update();
       break;
       //showAngle-->show2dRight
   case Qt::Key_4:
       showAngle=4;
+      bOnlySkull=1;
+      trfhead=-1;
       update();
       break;
       //showAngle-->show2dTop
   case Qt::Key_5:
       showAngle=5;
+      bOnlySkull=1;
+      trfhead=-1;
       update();
       break;
       //showAngle-->show2dBelow
   case Qt::Key_6:
       showAngle=6;
+      bOnlySkull=1;
+      trfhead=-1;
       update();
       break;
 

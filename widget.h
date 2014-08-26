@@ -15,8 +15,14 @@ public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
 
+    bool isClose();
+
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::Widget *ui;
+    bool bclose;
 };
 
 #endif // WIDGET_H
