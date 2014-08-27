@@ -1,21 +1,3 @@
-/*
-
-    Qt OpenGL Tutorial - Lesson 05
-
-    nehewidget.cpp
-    v 1.00
-    2002/12/18
-
-    Copyright (C) 2002 Cavendish
-                       cavendish@qiliang.net
-                       http://www.qiliang.net/nehe_qt
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-*/
 
 #include <qmessagebox.h>
 #include <QtWidgets>
