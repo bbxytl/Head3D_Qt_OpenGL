@@ -6,7 +6,7 @@
 #include"widget.h"
 #include"chead.h"
 
-Chead ch("../head3D/headData/headdata.den");
+Chead ch("../Head3D_Qt_OpenGL/headData/headdata.den");
 
 NeHeWidget::NeHeWidget( QWidget* parent, const QGLWidget* name, bool fs )
     : QGLWidget( parent, name )
@@ -14,8 +14,9 @@ NeHeWidget::NeHeWidget( QWidget* parent, const QGLWidget* name, bool fs )
   showAngle=0;//3d
   bOnlySkull=0;
   showNLevel=0;
-  rothead=0.0;
+  rothead=90.0;
   trfhead=-2.3;
+
 
   w=new Widget(0);
 
@@ -37,31 +38,53 @@ NeHeWidget::~NeHeWidget()
 {
 }
 
+void enble()
+{
+    glEnable(GL_BLEND);
+    glBlendFunc( GL_SRC_ALPHA, GL_ONE );
+
+//    glEnable(GL_POINT_SMOOTH);
+//    glHint(GL_POINT_SMOOTH,GL_NICEST);
+//    glEnable(GL_LINE_SMOOTH);
+//    glHint(GL_LINE_SMOOTH,GL_NICEST);
+//    glEnable(GL_POLYGON_SMOOTH);
+//    glHint(GL_POLYGON_SMOOTH,GL_NICEST);
+
+}
 
 void NeHeWidget::paintGL()
 {
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
   glLoadIdentity();
+
+
   switch (showAngle) {
   case 0:
+      enble();
       ch.show3d(bOnlySkull,-0.5,  -0.5, trfhead, rothead, 1, 1, 1);
       break;
   case 1:
+      enble();
       ch.show2dAhead(showNLevel,bOnlySkull, trfhead,  -0.5, -0.5);
       break;
   case 2:
+      enble();
       ch.show2dBack(showNLevel,bOnlySkull, -trfhead,  -0.5, -0.5);
       break;
   case 3:
+      enble();
       ch.show2dLeft(showNLevel,bOnlySkull,-0.5, -trfhead,  -0.5);
       break;
   case 4:
+      enble();
       ch.show2dRight(showNLevel,bOnlySkull,-0.5, trfhead,  -0.5);
       break;
   case 5:
+      enble();
       ch.show2dTop(showNLevel,bOnlySkull,-0.5,  -0.5, trfhead);
       break;
   case 6:
+      enble();
       ch.show2dBelow(showNLevel,bOnlySkull,-0.5,  -0.5, trfhead);
       break;
   }
@@ -134,7 +157,7 @@ void NeHeWidget::keyPressEvent( QKeyEvent *e )
       update();
       break;
   case Qt::Key_R:   //press the key "R" to rotation the draw
-      rothead-=13;
+      rothead-=13.63;
       update();
       break;
   case Qt::Key_Down:

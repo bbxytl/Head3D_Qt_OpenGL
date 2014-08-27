@@ -10,6 +10,7 @@
 struct Hdata
 {
     unsigned char data[128][128];
+    float alp[128][128];
 };
 
 
