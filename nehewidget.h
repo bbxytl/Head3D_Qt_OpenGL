@@ -27,18 +27,26 @@ protected:
   void resizeGL( int width, int height );
 
   void keyPressEvent( QKeyEvent *e );
+  void mousePressEvent(QMouseEvent *e);
+
 
 protected:
 
   bool fullscreen;
   GLfloat trfhead;
-  GLfloat rothead;
+
 
   GLint showAngle;
   GLint showNLevel;
-  GLboolean bOnlySkull;
+  bool bOnlySkull;
+  bool bframe;
 
-  Widget *w;
+  Widget *w;  
+
+  int xRot;
+  int yRot;
+  int zRot;
+
 
 };
 

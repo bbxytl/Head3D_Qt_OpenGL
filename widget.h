@@ -15,9 +15,6 @@ public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
 
-//    void closeEvent(QCloseEvent *e);
-
-//    void setFirst(bool bfirst);
 
     void keyPressEvent(QKeyEvent *e);
 private slots:
@@ -25,7 +22,7 @@ private slots:
 
 private:
     Ui::Widget *ui;
-//    bool bfirst;
+
 
 };
 

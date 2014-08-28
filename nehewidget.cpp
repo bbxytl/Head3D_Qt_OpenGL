@@ -8,14 +8,18 @@
 
 Chead ch("../Head3D_Qt_OpenGL/headData/headdata.den");
 
+
 NeHeWidget::NeHeWidget( QWidget* parent, const QGLWidget* name, bool fs )
     : QGLWidget( parent, name )
 {
   showAngle=0;//3d
-  bOnlySkull=0;
+  bOnlySkull=true;
+  bframe=true;
   showNLevel=0;
-  rothead=90.0;
+
   trfhead=-2.3;
+
+  xRot=90;zRot=0;yRot=0;
 
 
   w=new Widget(0);
@@ -38,59 +42,35 @@ NeHeWidget::~NeHeWidget()
 {
 }
 
-void enble()
-{
-    glEnable(GL_BLEND);
-    glBlendFunc( GL_SRC_ALPHA, GL_ONE );
-
-//    glEnable(GL_POINT_SMOOTH);
-//    glHint(GL_POINT_SMOOTH,GL_NICEST);
-//    glEnable(GL_LINE_SMOOTH);
-//    glHint(GL_LINE_SMOOTH,GL_NICEST);
-//    glEnable(GL_POLYGON_SMOOTH);
-//    glHint(GL_POLYGON_SMOOTH,GL_NICEST);
-
-}
-
 void NeHeWidget::paintGL()
 {
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
   glLoadIdentity();
 
-
   switch (showAngle) {
   case 0:
-      enble();
-      ch.show3d(bOnlySkull,-0.5,  -0.5, trfhead, rothead, 1, 1, 1);
+      ch.show3d(bOnlySkull,bframe,-0.0,  -0.0, trfhead,  xRot, yRot, zRot);
       break;
   case 1:
-      enble();
-      ch.show2dAhead(showNLevel,bOnlySkull, trfhead,  -0.5, -0.5);
+      ch.show2dAhead(showNLevel, trfhead,  -0.5, -0.5);
       break;
   case 2:
-      enble();
-      ch.show2dBack(showNLevel,bOnlySkull, -trfhead,  -0.5, -0.5);
+      ch.show2dBack(showNLevel, -trfhead,  -0.5, -0.5);
       break;
   case 3:
-      enble();
-      ch.show2dLeft(showNLevel,bOnlySkull,-0.5, -trfhead,  -0.5);
+      ch.show2dLeft(showNLevel,-0.5, -trfhead,  -0.5);
       break;
   case 4:
-      enble();
-      ch.show2dRight(showNLevel,bOnlySkull,-0.5, trfhead,  -0.5);
+      ch.show2dRight(showNLevel,-0.5, trfhead,  -0.5);
       break;
   case 5:
-      enble();
-      ch.show2dTop(showNLevel,bOnlySkull,-0.5,  -0.5, trfhead);
+      ch.show2dTop(showNLevel,-0.5,  -0.5, trfhead);
       break;
   case 6:
-      enble();
-      ch.show2dBelow(showNLevel,bOnlySkull,-0.5,  -0.5, trfhead);
+      ch.show2dBelow(showNLevel,-0.5,  -0.5, trfhead);
       break;
   }
-
 }
-
 
 void NeHeWidget::initializeGL()
 {
@@ -100,8 +80,13 @@ void NeHeWidget::initializeGL()
   glEnable( GL_DEPTH_TEST );
   glDepthFunc( GL_LEQUAL );
   glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
-}
 
+
+  glEnable( GL_BLEND );
+  glDisable( GL_DEPTH_TEST );
+  glBlendFunc( GL_SRC_ALPHA, GL_ONE );
+
+}
 
 void NeHeWidget::resizeGL( int width, int height )
 {
@@ -117,6 +102,35 @@ void NeHeWidget::resizeGL( int width, int height )
   glLoadIdentity();
 }
 
+void NeHeWidget::mousePressEvent(QMouseEvent *event)
+{
+    if(event->buttons()&Qt::RightButton)
+    {
+        w->show();
+        w->move((QApplication::desktop()->width()-w->width())/2,(QApplication::desktop()->height()-w->height())/2);
+    }
+}
+
+static void qNormalizeAngle(int &angle)
+{
+    while (angle < 0)
+        angle += 360 ;
+    while (angle > 360)
+        angle -= 360;
+}
+static void ALPEnable(GLint showAngle)
+{
+    if(showAngle==0)
+    {
+        glDisable(  GL_DEPTH_TEST);
+        glEnable( GL_BLEND);
+    }
+    else
+    {
+        glDisable( GL_BLEND );
+        glEnable( GL_DEPTH_TEST );
+    }
+}
 
 void NeHeWidget::keyPressEvent( QKeyEvent *e )
 {
@@ -124,7 +138,6 @@ void NeHeWidget::keyPressEvent( QKeyEvent *e )
   {
   case Qt::Key_H:
       if(1){
-//      Widget *w=new Widget(0);
       w->show();
       w->move((QApplication::desktop()->width()-w->width())/2,(QApplication::desktop()->height()-w->height())/2);
       }
@@ -149,17 +162,63 @@ void NeHeWidget::keyPressEvent( QKeyEvent *e )
       bOnlySkull=!bOnlySkull;
       update();
       break;
+  case Qt::Key_F:
+      bframe=!bframe;
+      update();
+      break;
   case Qt::Key_C:
-      trfhead=-2.3;
-      bOnlySkull=0;
-      showAngle=0;
-      showNLevel=0;
+      if(showAngle!=0)
+      {
+          trfhead=-1;
+          bOnlySkull=false;
+          showNLevel=0;
+      }
+      else
+      {
+         trfhead=-2.3;
+         bOnlySkull=true;
+         xRot=90;yRot=0;zRot=0;
+      }
       update();
       break;
-  case Qt::Key_R:   //press the key "R" to rotation the draw
-      rothead-=13.63;
-      update();
-      break;
+
+  case Qt::Key_I: //x+
+  xRot+=15;
+//  yRot=0; zRot=0;
+  qNormalizeAngle(xRot);
+  update();
+  break;
+  case Qt::Key_K:  //x-
+  xRot-=15;
+//  yRot=0; zRot=0;
+  qNormalizeAngle(xRot);
+  update();
+  break;
+  case Qt::Key_L:  //y+
+  yRot+=15;
+//  xRot=0; zRot=0;
+  qNormalizeAngle(yRot);
+  update();
+  break;
+  case Qt::Key_J:   //y-
+  yRot-=15;
+//  xRot=0; zRot=0;
+  qNormalizeAngle(yRot);
+  update();
+  break;
+  case Qt::Key_N:   //z+
+  zRot+=15;
+//  yRot=0; xRot=0;
+  qNormalizeAngle(zRot);
+  update();
+  break;
+  case Qt::Key_M:   //z-
+  zRot-=15;
+//  yRot=0; xRot=0;
+  qNormalizeAngle(zRot);
+  update();
+  break;
+
   case Qt::Key_Down:
       trfhead-=0.2;
       update();
@@ -184,53 +243,67 @@ void NeHeWidget::keyPressEvent( QKeyEvent *e )
       //showAngle-->show3d
   case Qt::Key_0:
       showAngle=0;
-      bOnlySkull=0;
-      trfhead=-2.3;
+      bOnlySkull=true;
+      trfhead=-2.3;      
+      ALPEnable( showAngle);
       update();
       break;
       //showAngle-->show2dAhead
   case Qt::Key_1:
       showAngle=1;      
-      bOnlySkull=1;
+      bOnlySkull=false;
       trfhead=-1;
+      ALPEnable( showAngle);
       update();
       break;
       //showAngle-->show2dBack
   case Qt::Key_2:
       showAngle=2;
-      bOnlySkull=1;
+      bOnlySkull=false;
       trfhead=-1;
+      ALPEnable(showAngle);
       update();
       break;
       //showAngle-->show2dLeft
   case Qt::Key_3:
       showAngle=3;
-      bOnlySkull=1;
+      bOnlySkull=false;
       trfhead=-1;
+      ALPEnable( showAngle);
       update();
       break;
       //showAngle-->show2dRight
   case Qt::Key_4:
       showAngle=4;
-      bOnlySkull=1;
+      bOnlySkull=false;
       trfhead=-1;
+      ALPEnable( showAngle);
       update();
       break;
       //showAngle-->show2dTop
   case Qt::Key_5:
       showAngle=5;
-      bOnlySkull=1;
+      bOnlySkull=false;
       trfhead=-1;
+      ALPEnable( showAngle);
       update();
       break;
       //showAngle-->show2dBelow
   case Qt::Key_6:
       showAngle=6;
-      bOnlySkull=1;
+      bOnlySkull=false;
       trfhead=-1;
+      ALPEnable( showAngle);
       update();
       break;
+  default:
+      QMessageBox::information( 0,
+            "按键提醒！",
+            "只能使用【0-9,Q,A,S,F,C,H,I,J,K,M,N,UP,DOWN,LEFT,RIGHT】键！\n使用方法请查看帮助窗口：右键点击或单击‘H’键！",
+            QMessageBox::Ok);
 
   }
 }
+
+
 

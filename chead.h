@@ -25,19 +25,20 @@ public:
     void readheads();
     QVector<Hdata> getdatas();
 
-    void show2dLeft(GLint nlevel,GLboolean bOnlySkull,GLfloat translatef_x,GLfloat translatef_y,GLfloat translatef_z);
-    void show2dRight(GLint nlevel,GLboolean bOnlySkull,GLfloat translatef_x,GLfloat translatef_y,GLfloat translatef_z);
-    void show2dBack(GLint nlevel,GLboolean bOnlySkull,GLfloat translatef_x,GLfloat translatef_y,GLfloat translatef_z);
-    void show2dAhead(GLint nlevel,GLboolean bOnlySkull,GLfloat translatef_x,GLfloat translatef_y,GLfloat translatef_z);
-    void show2dTop(GLint nlevel,GLboolean bOnlySkull,GLfloat translatef_x,GLfloat translatef_y,GLfloat translatef_z);
-    void show2dBelow(GLint nlevel,GLboolean bOnlySkull,GLfloat translatef_x,GLfloat translatef_y,GLfloat translatef_z);
+    void show2dLeft(GLint nlevel,GLfloat translatef_x,GLfloat translatef_y,GLfloat translatef_z);
+    void show2dRight(GLint nlevel,GLfloat translatef_x,GLfloat translatef_y,GLfloat translatef_z);
+    void show2dBack(GLint nlevel,GLfloat translatef_x,GLfloat translatef_y,GLfloat translatef_z);
+    void show2dAhead(GLint nlevel,GLfloat translatef_x,GLfloat translatef_y,GLfloat translatef_z);
+    void show2dTop(GLint nlevel,GLfloat translatef_x,GLfloat translatef_y,GLfloat translatef_z);
+    void show2dBelow(GLint nlevel,GLfloat translatef_x,GLfloat translatef_y,GLfloat translatef_z);
 
-    void show3d(GLboolean bOnlySkull,GLfloat translatef_x=0,GLfloat translatef_y=0,GLfloat translatef_z=0,
-                GLfloat rotatef_angle=0,GLfloat rotatef_x=0,GLfloat rotatef_y=0,GLfloat rotatef_z=0);
+    void show3d(bool bOnlySkull=true,bool bframe=true,GLfloat translatef_x=0,GLfloat translatef_y=0,GLfloat translatef_z=0,
+                GLfloat rotatef_x=0,GLfloat rotatef_y=0,GLfloat rotatef_z=0);
 
 private:
     QString ms_filepath;
     QVector<Hdata> vhd;
+
 };
 
 #endif // CHEAD_H

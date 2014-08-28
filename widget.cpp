@@ -6,7 +6,7 @@ Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget)
 {
-    setFixedSize(639,637);
+    setFixedSize(577,397);
     ui->setupUi(this);    
 }
 
@@ -27,18 +27,3 @@ void Widget::keyPressEvent(QKeyEvent *e)
         this->close();
     }
 }
-
-//void Widget::closeEvent(QCloseEvent *e)
-//{
-//    if(bfirst)
-//    {
-//        NeHeWidget w( 0, 0, true );
-//        w.show();
-//        bfirst=!bfirst;
-//    }
-//}
-
-//void Widget::setFirst(bool bf)
-//{
-//    bfirst=bf;
-//}
