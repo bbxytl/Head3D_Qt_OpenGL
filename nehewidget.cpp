@@ -16,12 +16,14 @@ NeHeWidget::NeHeWidget( QWidget* parent, const QGLWidget* name, bool fs )
   bOnlySkull=true;
   bframe=true;
   showNLevel=0;
+  showAg3D=-1;
 
   trfhead=-2.3;
 
   xRot=90;zRot=0;yRot=0;
 
-
+  dg =new Dialog();
+  connect(dg,SIGNAL(infoSend(const GLint &)),this,SLOT(infoRecv(const GLint &)));
   w=new Widget(0);
 
   fullscreen = fs;
@@ -49,7 +51,8 @@ void NeHeWidget::paintGL()
 
   switch (showAngle) {
   case 0:
-      ch.show3d(bOnlySkull,bframe,-0.0,  -0.0, trfhead,  xRot, yRot, zRot);
+      ch.show3d(bOnlySkull,bframe,showAg3D,-0.0,  -0.0, trfhead,  xRot, yRot, zRot);
+      showAg3D=-1;
       break;
   case 1:
       ch.show2dAhead(showNLevel, trfhead,  -0.5, -0.5);
@@ -102,12 +105,15 @@ void NeHeWidget::resizeGL( int width, int height )
   glLoadIdentity();
 }
 
-void NeHeWidget::mousePressEvent(QMouseEvent *event)
+void NeHeWidget::infoRecv(const GLint &info)
 {
-    if(event->buttons()&Qt::RightButton)
+    if(showAngle!=0)
     {
-        w->show();
-        w->move((QApplication::desktop()->width()-w->width())/2,(QApplication::desktop()->height()-w->height())/2);
+        showNLevel=info;
+    }
+    else
+    {
+        showAg3D=info;
     }
 }
 
@@ -129,6 +135,22 @@ static void ALPEnable(GLint showAngle)
     {
         glDisable( GL_BLEND );
         glEnable( GL_DEPTH_TEST );
+    }
+}
+
+
+void NeHeWidget::mousePressEvent(QMouseEvent *event)
+{
+    if(event->buttons()&Qt::RightButton)
+    {
+        w->show();
+        w->move((QApplication::desktop()->width()-w->width())/2,(QApplication::desktop()->height()-w->height())/2);
+    }
+    if(event->button()&Qt::LeftButton)
+    {
+        dg->initcb(showAngle);
+        dg->show();
+        update();
     }
 }
 
@@ -164,6 +186,11 @@ void NeHeWidget::keyPressEvent( QKeyEvent *e )
       break;
   case Qt::Key_F:
       bframe=!bframe;
+      update();
+      break;
+  case Qt::Key_G:
+      dg->initcb(showAngle);
+      dg->show();
       update();
       break;
   case Qt::Key_C:

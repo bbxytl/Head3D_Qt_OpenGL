@@ -6,6 +6,7 @@
 #include <qgl.h>
 #include <GL/glu.h>
 #include "widget.h"
+#include "dialog.h"
 
 QT_BEGIN_NAMESPACE
 class QLabel;
@@ -38,6 +39,7 @@ protected:
 
   GLint showAngle;
   GLint showNLevel;
+  GLint showAg3D;
   bool bOnlySkull;
   bool bframe;
 
@@ -47,6 +49,10 @@ protected:
   int yRot;
   int zRot;
 
+  Dialog *dg;
+
+public slots:
+  void infoRecv(const GLint &);
 
 };
 

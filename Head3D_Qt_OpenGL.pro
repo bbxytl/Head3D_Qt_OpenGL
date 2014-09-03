@@ -17,10 +17,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         widget.cpp \
     nehewidget.cpp \
-    chead.cpp
+    chead.cpp \
+    dialog.cpp
 
 HEADERS  += widget.h \
     nehewidget.h \
-    chead.h
+    chead.h \
+    dialog.h
 
-FORMS    += widget.ui
+FORMS    += widget.ui \
+    dialog.ui
