@@ -16,7 +16,6 @@ NeHeWidget::NeHeWidget( QWidget* parent, const QGLWidget* name, bool fs )
   bOnlySkull=true;
   bframe=true;
   showNLevel=0;
-  showAg3D=-1;
 
   trfhead=-2.3;
 
@@ -51,8 +50,7 @@ void NeHeWidget::paintGL()
 
   switch (showAngle) {
   case 0:
-      ch.show3d(bOnlySkull,bframe,showAg3D,-0.0,  -0.0, trfhead,  xRot, yRot, zRot);
-      showAg3D=-1;
+      ch.show3d(bOnlySkull,bframe,-0.0,  -0.0, trfhead,  xRot, yRot, zRot);
       break;
   case 1:
       ch.show2dAhead(showNLevel, trfhead,  -0.5, -0.5);
@@ -113,7 +111,26 @@ void NeHeWidget::infoRecv(const GLint &info)
     }
     else
     {
-        showAg3D=info;
+        switch (info) {
+        case 0:
+            xRot=90; yRot=0; zRot=-90;
+            break;
+        case 1:
+            xRot=90; yRot=0; zRot=90;
+            break;
+        case 2: //Left
+            xRot=90; yRot=0; zRot=180;
+            break;
+        case 3: //Right
+            xRot=90; yRot=0; zRot=0;
+            break;
+        case 4:
+            xRot=180; yRot=0; zRot=0;
+            break;
+        case 5:
+            xRot=0; yRot=0; zRot=0;
+            break;
+        }
     }
 }
 
@@ -326,7 +343,7 @@ void NeHeWidget::keyPressEvent( QKeyEvent *e )
   default:
       QMessageBox::information( 0,
             "按键提醒！",
-            "只能使用【0-9,Q,A,S,F,C,H,I,J,K,M,N,UP,DOWN,LEFT,RIGHT】键！\n使用方法请查看帮助窗口：右键点击或单击‘H’键！",
+            "只能使用【0-9,Q,A,S,F,G,C,H,I,J,K,M,N,UP,DOWN,LEFT,RIGHT】键！\n使用方法请查看帮助窗口：右键点击或单击‘H’键！",
             QMessageBox::Ok);
 
   }

@@ -261,43 +261,15 @@ void Chead::show2dBelow(GLint v,GLfloat translatef_x,GLfloat translatef_y,GLfloa
     glEnd();
 }
 
-void Chead::show3d(bool bOnlySkull,bool bframe,GLint showAg3D,
+void Chead::show3d(bool bOnlySkull,bool bframe,
                    GLfloat translatef_x,GLfloat translatef_y,GLfloat translatef_z,
                    GLfloat rotatef_x,GLfloat rotatef_y,GLfloat rotatef_z)
 {
     glTranslatef( translatef_x, translatef_y, translatef_z );
-    if(showAg3D==-1)
-    {
-        glRotatef(rotatef_x,1,0,0);
-        glRotatef(rotatef_y,0,1,0);
-        glRotatef(rotatef_z,0,0,1);
-    }
-    else
-    {
-        switch (showAg3D) {
-        case 0:
-            glRotatef(90,1,0,0);
-            glRotatef(-90,0,0,1);
-            break;
-        case 1:
-            glRotatef(90,1,0,0);
-            glRotatef(90,0,0,1);
-            break;
-        case 2: //Left
-            glRotatef(90,1,0,0);
-            glRotatef(180,0,0,1);
-            break;
-        case 3: //Right
-            glRotatef(90,1,0,0);
-            break;
-        case 4:
-            glRotatef(180,1,0,0);
-            break;
-        case 5:
+    glRotatef(rotatef_x,1,0,0);
+    glRotatef(rotatef_y,0,1,0);
+    glRotatef(rotatef_z,0,0,1);
 
-            break;
-        }
-    }
     int s_alp=100;
     glBegin(GL_QUADS);
         int ct=vhd.count();

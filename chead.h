@@ -32,7 +32,7 @@ public:
     void show2dTop(GLint nlevel,GLfloat translatef_x,GLfloat translatef_y,GLfloat translatef_z);
     void show2dBelow(GLint nlevel,GLfloat translatef_x,GLfloat translatef_y,GLfloat translatef_z);
 
-    void show3d(bool bOnlySkull=true,bool bframe=true,GLint showAg3D=-1,
+    void show3d(bool bOnlySkull=true,bool bframe=true,
                 GLfloat translatef_x=0,GLfloat translatef_y=0,GLfloat translatef_z=0,
                 GLfloat rotatef_x=0,GLfloat rotatef_y=0,GLfloat rotatef_z=0);
 

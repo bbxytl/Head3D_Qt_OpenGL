@@ -39,7 +39,6 @@ protected:
 
   GLint showAngle;
   GLint showNLevel;
-  GLint showAg3D;
   bool bOnlySkull;
   bool bframe;
 
