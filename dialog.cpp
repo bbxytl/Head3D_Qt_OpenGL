@@ -1,5 +1,6 @@
 #include "dialog.h"
 #include "ui_dialog.h"
+#include <QPushButton>
 
 
 Dialog::Dialog(QWidget *parent) :
@@ -58,7 +59,9 @@ void Dialog::initcb(int showAngle)
 
 void Dialog::on_buttonBox_clicked(QAbstractButton *button)
 {
-    const GLint info=ui->comboBox->currentIndex();
+    GLint info=ui->comboBox->currentIndex();
+    if(ui->buttonBox->button(QDialogButtonBox::Cancel)==button)
+        info=-1;
     emit infoSend(info);
 
 }

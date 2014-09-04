@@ -130,6 +130,8 @@ void NeHeWidget::infoRecv(const GLint &info)
         case 5:
             xRot=0; yRot=0; zRot=0;
             break;
+        default:
+            break;
         }
     }
 }
@@ -340,12 +342,15 @@ void NeHeWidget::keyPressEvent( QKeyEvent *e )
       ALPEnable( showAngle);
       update();
       break;
+  case Qt::Key_Shift:
+  case Qt::Key_Print:
+      break;
   default:
       QMessageBox::information( 0,
             "按键提醒！",
             "只能使用【0-9,Q,A,S,F,G,C,H,I,J,K,M,N,UP,DOWN,LEFT,RIGHT】键！\n使用方法请查看帮助窗口：右键点击或单击‘H’键！",
             QMessageBox::Ok);
-
+        break;
   }
 }
 

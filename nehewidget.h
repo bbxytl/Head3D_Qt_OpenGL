@@ -42,13 +42,13 @@ protected:
   bool bOnlySkull;
   bool bframe;
 
-  Widget *w;  
+  Widget *w;  //Help
 
   int xRot;
   int yRot;
   int zRot;
 
-  Dialog *dg;
+  Dialog *dg;   //Choice
 
 public slots:
   void infoRecv(const GLint &);

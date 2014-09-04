@@ -36,8 +36,8 @@ void Chead::readheads()
                         else if(tpdt>=10&&tpdt<30) tpal=0.01;
                         else if(tpdt>=30&&tpdt<60) tpal=0.004*tpdt-0.11;
                         else if(tpdt>=60&&tpdt<140)tpal=0.003*tpdt-0.05;
-                        else if(tpdt>=140&&tpdt<190) tpal=0.004*tpdt-0.12;
-                        else if(tpdt>=190)tpal=0.004*tpdt-0.12;
+                        else if(tpdt>=140&&tpdt<180) tpal=0.004*tpdt-0.12;
+                        else if(tpdt>=180)tpal=0.6;
 
                         tmpdata.alp[j][k]=tpal;
                     }
