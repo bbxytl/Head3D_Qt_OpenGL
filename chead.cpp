@@ -18,19 +18,22 @@ void Chead::readheads()
     if(file.open(QFile::ReadOnly))
     {        
         QDataStream sm_data(&file);
-        sm_data.setVersion(QDataStream::Qt_5_3);        
-            for(int i=0;i<113;i++)
+        sm_data.setVersion(QDataStream::Qt_5_3);
+        unsigned char c;
+        for(int i=0;i<44;i++)sm_data>>c;
+
+        for(int i=0;i<113;i++)
+        {
+            Hdata tmpdata;
+            for(int j=0;j<128;j++)
             {
-                Hdata tmpdata;
-                for(int j=0;j<128;j++)
-                {
-                    for(int k=0;k<128;k++)
-                    {
-                        sm_data>>tmpdata.data[j][k];
-                    }
-                }
-                vhd.append(tmpdata);
+               for(int k=0;k<128;k++)
+               {
+                    sm_data>>tmpdata.data[j][k];
+               }
             }
+            vhd.append(tmpdata);
+        }
     }
 
     file.close();

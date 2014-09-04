@@ -6,7 +6,7 @@
 #include"widget.h"
 #include"chead.h"
 
-Chead ch("../Head3D_Qt_OpenGL/headData/headdata.den");
+Chead ch("../Head3D_Qt_OpenGL/headData/head-128x128x113.den");
 
 
 NeHeWidget::NeHeWidget( QWidget* parent, const QGLWidget* name, bool fs )
