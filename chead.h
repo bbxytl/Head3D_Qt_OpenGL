@@ -10,7 +10,7 @@
 struct Hdata
 {
     unsigned char data[128][128];
-    float alp[128][128];
+//    float alp[128][128];
 };
 
 
@@ -37,6 +37,9 @@ public:
                 GLfloat rotatef_x=0,GLfloat rotatef_y=0,GLfloat rotatef_z=0);
 
 private:
+    GLfloat getAlpha(unsigned char vhd_data,unsigned char s_alp,bool bOnlySkull,
+                     GLfloat nAlp1=0.035,GLfloat nAlp2=0.015,GLfloat nAlp3=0.08);
+
     QString ms_filepath;
     QVector<Hdata> vhd;
 

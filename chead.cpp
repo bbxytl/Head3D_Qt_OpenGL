@@ -27,19 +27,6 @@ void Chead::readheads()
                     for(int k=0;k<128;k++)
                     {
                         sm_data>>tmpdata.data[j][k];
-
-                        unsigned char tpdt;
-                        float tpal;
-                        tpdt=tmpdata.data[j][k];
-                        tpal=0.0;
-                        if(tpdt<10)  tpal=0;
-                        else if(tpdt>=10&&tpdt<30) tpal=0.01;
-                        else if(tpdt>=30&&tpdt<60) tpal=0.004*tpdt-0.11;
-                        else if(tpdt>=60&&tpdt<140)tpal=0.003*tpdt-0.05;
-                        else if(tpdt>=140&&tpdt<180) tpal=0.004*tpdt-0.12;
-                        else if(tpdt>=180)tpal=0.6;
-
-                        tmpdata.alp[j][k]=tpal;
                     }
                 }
                 vhd.append(tmpdata);
@@ -54,6 +41,27 @@ QVector<Hdata> Chead::getdatas()
     return vhd;
 }
 
+GLfloat Chead::getAlpha(unsigned char vhd_data,unsigned char s_alp,bool bOnlySkull,
+                        GLfloat nAlp1,GLfloat nAlp2,GLfloat nAlp3)
+{
+    unsigned char tpdt=vhd_data;
+    GLfloat tpal;
+    tpal=0.0;
+    if(tpdt<10)  tpal=0;
+    else if(tpdt>=10&&tpdt<30) tpal=0.01;
+    else if(tpdt>=30&&tpdt<60) tpal=0.004*tpdt-0.11;
+    else if(tpdt>=60&&tpdt<140)tpal=0.003*tpdt-0.05;
+    else if(tpdt>=140&&tpdt<180) tpal=0.004*tpdt-0.12;
+    else if(tpdt>=180)tpal=0.6;
+
+    if(!bOnlySkull)
+    {
+        if(tpal<s_alp){tpal=tpal*nAlp1;}
+        else{tpal=tpal*nAlp2;}
+    }else{ tpal=tpal*nAlp3; }
+
+    return tpal;
+}
 
 void Chead::show2dAhead(GLint v,GLfloat translatef_x,GLfloat translatef_y,GLfloat translatef_z)
 {
@@ -288,35 +296,35 @@ void Chead::show3d(bool bOnlySkull,bool bframe,
                     z0=(v-kz)/113.0; z1=(v+1-kz)/113.0;
 
                     //1
-                    rgb=vhd[v].data[i][j]/255.0;        alp=vhd[v].alp[i][j];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y0,z0);
-                    rgb=vhd[v].data[i+1][j]/255.0;      alp=vhd[v].alp[i+1][j];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y0,z0);
-                    rgb=vhd[v].data[i+1][j+1]/255.0;    alp=vhd[v].alp[i+1][j+1];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y1,z0);
-                    rgb=vhd[v].data[i][j+1]/255.0;      alp=vhd[v].alp[i][j+1];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y1,z0);
+                    rgb=vhd[v].data[i][j]/255.0;        alp=getAlpha(vhd[v].data[i][j],s_alp,bOnlySkull);         glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y0,z0);
+                    rgb=vhd[v].data[i+1][j]/255.0;      alp=getAlpha(vhd[v].data[i+1][j],s_alp,bOnlySkull);       glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y0,z0);
+                    rgb=vhd[v].data[i+1][j+1]/255.0;    alp=getAlpha(vhd[v].data[i+1][j+1],s_alp,bOnlySkull);     glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y1,z0);
+                    rgb=vhd[v].data[i][j+1]/255.0;      alp=getAlpha(vhd[v].data[i][j+1],s_alp,bOnlySkull);       glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y1,z0);
                     //2
-                    rgb=vhd[v].data[i][j]/255.0;        alp=vhd[v].alp[i][j];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y0,z0);
-                    rgb=vhd[v].data[i][j+1]/255.0;      alp=vhd[v].alp[i][j+1];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y1,z0);
-                    rgb=vhd[v+1].data[i][j+1]/255.0;    alp=vhd[v+1].alp[i][j+1];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y1,z1);
-                    rgb=vhd[v+1].data[i][j]/255.0;      alp=vhd[v+1].alp[i][j];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y0,z1);
+                    rgb=vhd[v].data[i][j]/255.0;        alp=getAlpha(vhd[v].data[i][j],s_alp,bOnlySkull);          glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y0,z0);
+                    rgb=vhd[v].data[i][j+1]/255.0;      alp=getAlpha(vhd[v].data[i][j+1],s_alp,bOnlySkull);        glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y1,z0);
+                    rgb=vhd[v+1].data[i][j+1]/255.0;    alp=getAlpha(vhd[v+1].data[i][j+1],s_alp,bOnlySkull);      glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y1,z1);
+                    rgb=vhd[v+1].data[i][j]/255.0;      alp=getAlpha(vhd[v+1].data[i][j],s_alp,bOnlySkull);        glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y0,z1);
                     //3
-                    rgb=vhd[v+1].data[i][j]/255.0;      alp=vhd[v+1].alp[i][j];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y0,z1);
-                    rgb=vhd[v+1].data[i+1][j]/255.0;    alp=vhd[v+1].alp[i+1][j];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y0,z1);
-                    rgb=vhd[v+1].data[i+1][j+1]/255.0;  alp=vhd[v+1].alp[i+1][j+1];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y1,z1);
-                    rgb=vhd[v+1].data[i][j+1]/255.0;    alp=vhd[v+1].alp[i][j+1];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y1,z1);
+                    rgb=vhd[v+1].data[i][j]/255.0;      alp=getAlpha(vhd[v+1].data[i][j],s_alp,bOnlySkull);        glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y0,z1);
+                    rgb=vhd[v+1].data[i+1][j]/255.0;    alp=getAlpha(vhd[v+1].data[i+1][j],s_alp,bOnlySkull);      glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y0,z1);
+                    rgb=vhd[v+1].data[i+1][j+1]/255.0;  alp=getAlpha(vhd[v+1].data[i+1][j+1],s_alp,bOnlySkull);    glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y1,z1);
+                    rgb=vhd[v+1].data[i][j+1]/255.0;    alp=getAlpha(vhd[v+1].data[i][j+1],s_alp,bOnlySkull);      glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y1,z1);
                     //4
-                    rgb=vhd[v].data[i+1][j]/255.0;        alp=vhd[v].alp[i+1][j];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y0,z0);
-                    rgb=vhd[v].data[i+1][j+1]/255.0;      alp=vhd[v].alp[i+1][j+1];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y1,z0);
-                    rgb=vhd[v+1].data[i+1][j+1]/255.0;    alp=vhd[v+1].alp[i+1][j+1];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y1,z1);
-                    rgb=vhd[v+1].data[i+1][j]/255.0;      alp=vhd[v+1].alp[i+1][j];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y0,z1);
+                    rgb=vhd[v].data[i+1][j]/255.0;        alp=getAlpha(vhd[v].data[i+1][j],s_alp,bOnlySkull);      glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y0,z0);
+                    rgb=vhd[v].data[i+1][j+1]/255.0;      alp=getAlpha(vhd[v].data[i+1][j+1],s_alp,bOnlySkull);    glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y1,z0);
+                    rgb=vhd[v+1].data[i+1][j+1]/255.0;    alp=getAlpha(vhd[v+1].data[i+1][j+1],s_alp,bOnlySkull);  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y1,z1);
+                    rgb=vhd[v+1].data[i+1][j]/255.0;      alp=getAlpha(vhd[v+1].data[i+1][j],s_alp,bOnlySkull);    glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y0,z1);
                     //5
-                    rgb=vhd[v+1].data[i][j]/255.0;      alp=vhd[v+1].alp[i][j];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y0,z1);
-                    rgb=vhd[v+1].data[i+1][j]/255.0;    alp=vhd[v+1].alp[i+1][j];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y0,z1);
-                    rgb=vhd[v].data[i+1][j]/255.0;      alp=vhd[v].alp[i+1][j];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y0,z0);
-                    rgb=vhd[v].data[i][j]/255.0;        alp=vhd[v].alp[i][j];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y0,z0);
+                    rgb=vhd[v+1].data[i][j]/255.0;      alp=getAlpha(vhd[v+1].data[i][j],s_alp,bOnlySkull);        glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y0,z1);
+                    rgb=vhd[v+1].data[i+1][j]/255.0;    alp=getAlpha(vhd[v+1].data[i+1][j],s_alp,bOnlySkull);      glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y0,z1);
+                    rgb=vhd[v].data[i+1][j]/255.0;      alp=getAlpha(vhd[v].data[i+1][j],s_alp,bOnlySkull);        glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y0,z0);
+                    rgb=vhd[v].data[i][j]/255.0;        alp=getAlpha(vhd[v].data[i][j],s_alp,bOnlySkull);          glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y0,z0);
                     //6
-                    rgb=vhd[v].data[i+1][j+1]/255.0;      alp=vhd[v].alp[i+1][j+1];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y1,z0);
-                    rgb=vhd[v].data[i][j+1]/255.0;        alp=vhd[v].alp[i][j+1];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y1,z0);
-                    rgb=vhd[v+1].data[i][j+1]/255.0;      alp=vhd[v+1].alp[i][j+1];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y1,z1);
-                    rgb=vhd[v+1].data[i+1][j+1]/255.0;    alp=vhd[v+1].alp[i+1][j+1];       if(!bOnlySkull){if(alp<s_alp){alp=alp*0.035;}else{alp=alp*0.015;}}else{alp=alp*0.08;}  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y1,z1);
+                    rgb=vhd[v].data[i+1][j+1]/255.0;      alp=getAlpha(vhd[v].data[i+1][j+1],s_alp,bOnlySkull);    glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y1,z0);
+                    rgb=vhd[v].data[i][j+1]/255.0;        alp=getAlpha(vhd[v].data[i][j+1],s_alp,bOnlySkull);      glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y1,z0);
+                    rgb=vhd[v+1].data[i][j+1]/255.0;      alp=getAlpha(vhd[v+1].data[i][j+1],s_alp,bOnlySkull);    glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x0,y1,z1);
+                    rgb=vhd[v+1].data[i+1][j+1]/255.0;    alp=getAlpha(vhd[v+1].data[i+1][j+1],s_alp,bOnlySkull);  glColor4f(rgb,rgb,rgb,alp);   glVertex3f(x1,y1,z1);
 
                 }
             }
