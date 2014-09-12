@@ -12,7 +12,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = head3D
+TARGET = Head3D_Qt_OpenGL
 TEMPLATE = app
 
 
