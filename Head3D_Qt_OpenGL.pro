@@ -3,7 +3,9 @@
 # Project created by QtCreator 2014-08-22T06:51:49
 #
 #-------------------------------------------------
-LIBS += -lglut -lGLU
+DEPENDPATH +=
+LIBS += -lglut 
+# -lGLU
 QT          += opengl widgets
 
 QT       += core gui
